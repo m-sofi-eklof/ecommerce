@@ -1,7 +1,7 @@
 FROM eclipse-temurin:24-jdk-alpine AS BUILD
 WORKDIR /app
 COPY . .
-RUN ./gradlew bootJar --no-daemon
+RUN ./gradlew clean bootJar --no-daemon
 
 FROM eclipse-temurin:24-jre-alpine
 WORKDIR /app

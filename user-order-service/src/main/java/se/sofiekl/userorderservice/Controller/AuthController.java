@@ -1,4 +1,4 @@
-package se.sofiekl.userorderservice.controller;
+package se.sofiekl.userorderservice.Controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
