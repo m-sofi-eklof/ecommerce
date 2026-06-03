@@ -21,8 +21,9 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<OrderResponse> createOrder(
             @AuthenticationPrincipal String email,
+            @RequestHeader("Authorization") String authHeader,
             @RequestBody OrderRequest request) {
-        OrderResponse response = orderService.createOrder(email, request);
+        OrderResponse response = orderService.createOrder(email, authHeader, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

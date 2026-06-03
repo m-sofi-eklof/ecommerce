@@ -1,8 +1,9 @@
 package se.sofiekl.userorderservice.service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import se.sofiekl.userorderservice.client.ProductServiceClient;
 import se.sofiekl.userorderservice.DTO.*;
 import se.sofiekl.userorderservice.model.Order;
 import se.sofiekl.userorderservice.model.OrderItem;
@@ -10,7 +11,6 @@ import se.sofiekl.userorderservice.model.User;
 import se.sofiekl.userorderservice.repository.OrderRepository;
 import se.sofiekl.userorderservice.repository.UserRepository;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -19,8 +19,10 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
+    private final ProductServiceClient productServiceClient;
 
-    public OrderResponse createOrder(String email, OrderRequest request) {
+    @Transactional
+    public OrderResponse createOrder(String email, String authHeader, OrderRequest request) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -29,13 +31,18 @@ public class OrderService {
                 .build();
 
         List<OrderItem> items = request.getItems().stream()
-                .map(itemRequest -> OrderItem.builder()
-                        .order(order)
-                        .productId(itemRequest.getProductId())
-                        .title("Product " + itemRequest.getProductId())
-                        .price(BigDecimal.ZERO)
-                        .quantity(itemRequest.getQuantity())
-                        .build())
+                .map(itemRequest -> {
+                    se.sofiekl.userorderservice.dto.ProductResponse product = productServiceClient
+                            .getProductById(itemRequest.getProductId(), authHeader);
+
+                    return OrderItem.builder()
+                            .order(order)
+                            .productId(itemRequest.getProductId())
+                            .title(product.getTitle())
+                            .price(product.getPrice())
+                            .quantity(itemRequest.getQuantity())
+                            .build();
+                })
                 .toList();
 
         order.setItems(items);
