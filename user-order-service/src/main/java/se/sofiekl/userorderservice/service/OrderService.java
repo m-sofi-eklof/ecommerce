@@ -32,7 +32,7 @@ public class OrderService {
 
         List<OrderItem> items = request.getItems().stream()
                 .map(itemRequest -> {
-                    se.sofiekl.userorderservice.dto.ProductResponse product = productServiceClient
+                    ProductResponse product = productServiceClient
                             .getProductById(itemRequest.getProductId(), authHeader);
 
                     return OrderItem.builder()

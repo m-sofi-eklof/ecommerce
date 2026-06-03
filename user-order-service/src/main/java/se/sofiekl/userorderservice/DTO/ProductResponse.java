@@ -1,4 +1,4 @@
-package se.sofiekl.userorderservice.dto;
+package se.sofiekl.userorderservice.DTO;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;

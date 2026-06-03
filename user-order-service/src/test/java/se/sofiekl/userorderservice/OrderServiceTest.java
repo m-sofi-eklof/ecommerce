@@ -46,7 +46,7 @@ class OrderServiceTest {
                 .username("sofia")
                 .build();
 
-        se.sofiekl.userorderservice.dto.ProductResponse product = new se.sofiekl.userorderservice.dto.ProductResponse();
+        ProductResponse product = new ProductResponse();
         product.setId(1);
         product.setTitle("Fjallraven Backpack");
         product.setPrice(BigDecimal.valueOf(109.95));

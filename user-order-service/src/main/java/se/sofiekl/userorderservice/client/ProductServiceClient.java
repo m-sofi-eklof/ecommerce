@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
-import se.sofiekl.userorderservice.dto.ProductResponse;
+import se.sofiekl.userorderservice.DTO.ProductResponse;
 
 @Component
 @RequiredArgsConstructor
