@@ -20,6 +20,10 @@ jobs:
           java-version: '24'
           distribution: 'temurin'
 
+      - name: Grant gradlew permissions
+        working-directory: product-service
+        run: chmod +x gradlew
+
       - name: Build jar
         working-directory: product-service
         run: ./gradlew bootJar
