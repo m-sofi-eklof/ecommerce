@@ -20,6 +20,10 @@ jobs:
           java-version: '24'
           distribution: 'temurin'
 
+      - name: Grant gradlew permissions
+        working-directory: user-order-service
+        run: chmod +x gradlew
+
       - name: Run tests
         working-directory: user-order-service
         run: ./gradlew clean test
