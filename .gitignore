@@ -39,6 +39,7 @@ out/
 
 # env vars
 .env
+frontend/.env
 
 # Docker
 docker-compose.override.yml
