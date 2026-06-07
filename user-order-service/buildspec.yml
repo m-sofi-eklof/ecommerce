@@ -1,0 +1,31 @@
+version: 0.2
+
+env:
+  secrets-manager:
+    DOCKERHUB_USERNAME: ecommerce/dockerhub:username
+    DOCKERHUB_PASSWORD: ecommerce/dockerhub:password
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging into DockerHub
+      - echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
+      - echo Running tests
+      - cd user-order-service
+      - ./gradlew clean test
+
+  build:
+    commands:
+      - echo Building Docker image
+      - ./gradlew bootJar
+      - docker build -t $DOCKERHUB_USERNAME/ecommerce-user-order-service:latest .
+      - docker push $DOCKERHUB_USERNAME/ecommerce-user-order-service:latest
+
+  post_build:
+    commands:
+      - echo Deploying to EC2
+      - aws ssm send-command
+        --instance-ids "i-0f95799c56b8dd3a9"
+        --document-name "AWS-RunShellScript"
+        --parameters commands=["cd ~/ && docker-compose pull && docker-compose up -d"]
+        --region eu-north-1
