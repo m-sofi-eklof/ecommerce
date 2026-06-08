@@ -5,6 +5,7 @@ on:
     branches: [ main ]
     paths:
       - 'user-order-service/**'
+      - 'frontend/**'
 
 jobs:
   build-and-deploy:
@@ -54,3 +55,24 @@ jobs:
             cd ~/
             docker-compose pull
             docker-compose up -d
+
+      - name: Build React frontend
+        working-directory: frontend
+        env:
+          REACT_APP_USER_ORDER_URL: https://51.21.171.213.nip.io
+          REACT_APP_PRODUCT_URL: https://51.20.56.177.nip.io
+        run: |
+          npm ci
+          npm run build
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.EC2_1_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Copy frontend build to EC2
+        run: |
+          ssh ec2-user@${{ secrets.EC2_1_HOST }} "mkdir -p ~/frontend"
+          scp -r frontend/build/* ec2-user@${{ secrets.EC2_1_HOST }}:~/frontend/
