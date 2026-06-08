@@ -14,7 +14,7 @@ function Navbar() {
 
     return (
         <nav style={{ padding: '1rem', background: '#333', color: 'white', display: 'flex', gap: '1rem', alignItems: 'center' }}>
-            <span style={{ fontWeight: 'bold', marginRight: 'auto' }}>CloudStore</span>
+            <span style={{ fontWeight: 'bold', marginRight: 'auto' }}>SimpleStore</span>
             {token ? (
                 <>
                     <Link to="/products" style={{ color: 'white' }}>Products</Link>
