@@ -59,7 +59,7 @@ jobs:
       - name: Build React frontend
         working-directory: frontend
         env:
-          REACT_APP_USER_ORDER_URL: https://51.21.171.213.nip.io
+          REACT_APP_USER_ORDER_URL: https://16.171.153.211.nip.io
           REACT_APP_PRODUCT_URL: https://51.20.56.177.nip.io
         run: |
           npm install
